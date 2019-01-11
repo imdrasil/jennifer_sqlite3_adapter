@@ -1,0 +1,4 @@
+language: crystal
+
+before_script:
+  - crystal sam.cr -- db:setup
