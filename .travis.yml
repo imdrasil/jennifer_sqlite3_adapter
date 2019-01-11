@@ -1,4 +1,4 @@
 language: crystal
-
-before_script:
-  - crystal sam.cr -- db:setup
+dist: trusty
+sudo: required
+before_script: bash .travis.setup.sh
