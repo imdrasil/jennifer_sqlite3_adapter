@@ -19,7 +19,17 @@ This shard requires Jennifer `~> 0.7.0`. It is tested with SQLite 3.22.0 version
 ```crystal
 require "jennifer"
 require "jennifer_sqlite3_adapter"
+
+Jennifer::Config.configure do |conf|
+  conf.adapter = "sqlite3"
+  # conf.host = "."
+  # conf.db = "test.db"
+end
 ```
+
+`user` and `password` configuration is not required as database is SQLite doesn't provide db-user authentication and they are ignored. `host` options is used to specify path to db-file, `db` - file name.
+
+As
 
 ### Supported data types
 
