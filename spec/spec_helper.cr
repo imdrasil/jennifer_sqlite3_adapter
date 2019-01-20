@@ -1,6 +1,5 @@
 require "spec"
-require "jennifer"
-require "../src/jennifer_sqlite3_adapter"
+require "./jennifer_setup"
 require "./models"
 # require "factory"
 require "./support/array_logger"

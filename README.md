@@ -1,4 +1,4 @@
-# Jennifer SQLite3 adapter
+# Jennifer SQLite3 adapter [![Build Status](https://travis-ci.org/imdrasil/jennifer_sqlite3_adapter.svg)](https://travis-ci.org/imdrasil/jennifer_sqlite3_adapter) [![Latest Release](https://img.shields.io/github/release/imdrasil/jennifer_sqlite3_adapter.svg)](https://github.com/imdrasil/jennifer_sqlite3_adapter/releases) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://imdrasil.github.io/jennifer_sqlite3_adapter/versions)
 
 SQLite3 adapter for [Jennifer](https://github.com/imdrasil/jennifer.cr).
 
