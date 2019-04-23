@@ -172,7 +172,7 @@ module Jennifer
       private def index_type_translate(name : Symbol?)
         case name
         when :unique, :uniq
-          "UNIQUE"
+          "UNIQUE "
         when nil
           " "
         else
