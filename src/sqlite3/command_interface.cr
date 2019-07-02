@@ -41,6 +41,17 @@ module Jennifer
         execute(command)
       end
 
+      def database_exists?
+        command = Command.new(
+          executable: "test",
+          options: ["-e", db_path] of Command::Option
+        )
+        execute(command)
+        true
+      rescue error : Command::Failed
+        false
+      end
+
       private def db_path
         File.join(config.host, config.db)
       end

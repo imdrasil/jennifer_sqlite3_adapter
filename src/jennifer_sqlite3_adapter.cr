@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.1.0"
+    VERSION = "0.2.0"
 
     class Adapter < Adapter::Base
       alias EnumType = String
@@ -61,28 +61,44 @@ module Jennifer
         end
       end
 
-      def table_exists?(table)
+      def tables_column_count(tables)
+        MetaTable
+          .all
+          .tables
+          .where { _tbl_name.in(tables) }
+          .to_a
+          .map do |table|
+            Record.new({ "table_name" => table.tbl_name, "count" => table.columns.size.to_i64 } of String => DBAny)
+          end
+      end
+
+      def table_exists?(table) : Bool
         MetaTable.table(table).exists?
       end
 
-      def view_exists?(table)
+      def view_exists?(table) : Bool
         MetaTable.view(table).exists?
       end
 
-      def index_exists?(table, name)
+      def index_exists?(table, name : String) : Bool
         MetaTable.table(table).first.try(&.indexes.any?(&.name.==(name.to_s))) || false
       end
 
-      def column_exists?(table, name)
+      def column_exists?(table, name) : Bool
         MetaTable.table(table).first.try(&.columns.any?(&.name.==(name.to_s))) || false
       end
 
-      def foreign_key_exists?(from_table, to_table)
-        MetaTable.table(from_table).first.try(&.foreign_keys.any?(&.to_table.==(to_table.to_s))) || false
-      end
+      def foreign_key_exists?(from_table : String, to_table : String? = nil, column = nil, name : String? = nil) : Bool
+        raise ArgumentError.new("SQLite3 adapter doesn't support ") if name
+        table = MetaTable.table(from_table).first
+        return false unless table && (to_table || column)
 
-      def foreign_key_exists?(name)
-        raise ArgumentError.new("Use table names instead")
+        table.foreign_keys.any? do |fk|
+          result = true
+          result &= fk.to_table == to_table if to_table
+          result &= fk.column == column if column
+          result
+        end
       end
 
       def with_table_lock(table : String, type : String = "default", &block)
@@ -91,6 +107,24 @@ module Jennifer
                               " Instead of this only transaction was started.")
           yield t
         end
+      end
+
+      def explain(q) : String
+        body = sql_generator.explain(q)
+        args = q.sql_args
+        plan = [%w(selectid order from detail)]
+        query(*parse_query(body, args)) do |rs|
+          rs.each do
+            temp = %w()
+            temp << rs.read.to_s
+            temp << rs.read.to_s
+            temp << rs.read.to_s
+            temp << rs.read.to_s
+            plan << temp
+          end
+        end
+
+        plan.map(&.join("|")).join("\n")
       end
 
       def self.command_interface

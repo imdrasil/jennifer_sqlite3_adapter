@@ -9,3 +9,4 @@
 /shard.lock
 *.db
 /spec/support/structure.sql
+/bin

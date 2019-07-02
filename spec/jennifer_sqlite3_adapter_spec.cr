@@ -74,6 +74,20 @@ describe Jennifer::SQLite3::Adapter do
     end
   end
 
+  describe "#tables_column_count" do
+    it "returns amount of tables fields" do
+      adapter.tables_column_count(["users", "posts"]).to_a.map(&.count).should eq([6, 7])
+    end
+
+    pending "returns amount of views fields" do
+      adapter.tables_column_count(["male_contacts", "female_contacts"]).to_a.map(&.count).should eq([9, 10])
+    end
+
+    it "returns nothing for unknown tables" do
+      adapter.tables_column_count(["missing_table"]).to_a.should be_empty
+    end
+  end
+
   describe "#table_exists?" do
     context "with name of existing table" do
       it { adapter.table_exists?("users").should be_true }
@@ -126,10 +140,15 @@ describe Jennifer::SQLite3::Adapter do
       it { adapter.foreign_key_exists?("posts", "missing_table").should be_false }
     end
 
+    context "with column name" do
+      it { adapter.foreign_key_exists?("posts", "users", "user_id").should be_true }
+      it { adapter.foreign_key_exists?("posts", "users", "post_id").should be_false }
+    end
+
     context "with foreign key name" do
       it do
         expect_raises(ArgumentError) do
-          adapter.foreign_key_exists?("some_name")
+          adapter.foreign_key_exists?("users", name: "some_name")
         end
       end
     end
@@ -147,5 +166,97 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#command_interface" do
     it { adapter.class.command_interface.is_a?(Jennifer::SQLite3::CommandInterface).should be_true }
+  end
+
+  describe "#explain" do
+    it do
+      result = adapter.explain(Jennifer::Query["users"].join("posts") { |origin, joined| joined._user_id == origin._id }).split("\n")
+      result[0].should eq("selectid|order|from|detail")
+      result[1].should eq("0|0|1|SCAN TABLE posts")
+      result[2].should eq("0|1|0|SEARCH TABLE users USING INTEGER PRIMARY KEY (rowid=?)")
+    end
+  end
+
+  describe "#update" do
+    context "given object" do
+      it "updates fields if they were changed" do
+        user = User.create({ name: "Adam" })
+        user.name = "new name"
+        r = adapter.update(user)
+        r.rows_affected.should eq(1)
+      end
+    end
+  end
+
+  describe "#exec" do
+    it "execs query" do
+      adapter.exec(
+        "insert into users(name, admin, created_at, updated_at) values('new', 0, ?, ?)",
+        [Time.now, Time.now]
+      )
+    end
+
+    it "raises exception if query is broken" do
+      expect_raises(Jennifer::BadQuery, /Original query was/) do
+        adapter.exec("insert into countries(name) set values(?)", ["new"])
+      end
+    end
+  end
+
+  describe "#query" do
+    it "perform query" do
+      adapter.query("select * from users") { |rs| read_to_end(rs) }
+    end
+
+    it "raises exception if query is broken" do
+      expect_raises(Jennifer::BadQuery, /Original query was/) do
+        adapter.query("select * from table users") { |rs| read_to_end(rs) }
+      end
+    end
+  end
+
+  describe "#upsert" do
+    it "raises exception" do
+      User.create({ name: "Ivan", age: 23 })
+      values = [["Ivan", 44, Time.now, Time.now]]
+      expect_raises(Jennifer::BaseException, "SQLite3 doesn't support UPSERT. Consider using plain REPLACE") do
+        User.all.upsert(%w(name admin created_at updated_at), values, %w(name)) { { :age => 1, :name => "a" } }
+      end
+    end
+  end
+
+  describe "#delete" do
+    it "removes record from db" do
+      User.create({ name: "Ivan", age: 23 })
+      adapter.delete(User.all)
+      User.all.count.should eq(0)
+    end
+  end
+
+  describe "#truncate" do
+    it "raise an exception" do
+      User.create({ name: "Ivan", age: 23 })
+      expect_raises(Jennifer::BaseException, "TRUNCATE command isn't supported") do
+        adapter.truncate(User.table_name)
+      end
+    end
+  end
+
+  describe "#exists?" do
+    it "returns true if record exists" do
+      User.create({ name: "Ivan", age: 23 })
+      adapter.exists?(User.all).should be_true
+    end
+
+    it "returns false if record doesn't exist" do
+      adapter.exists?(User.all).should be_false
+    end
+  end
+
+  describe "#count" do
+    it "returns count of objects" do
+      User.create({ name: "Ivan", age: 23 })
+      adapter.count(User.all).should eq(1)
+    end
   end
 end

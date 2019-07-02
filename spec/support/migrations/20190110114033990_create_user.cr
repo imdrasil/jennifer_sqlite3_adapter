@@ -5,7 +5,7 @@ class CreateUser < Jennifer::Migration::Base
       t.integer :age
       t.bool :admin, { :null => false, :default => false }
 
-      t.index "name_index", [:name]
+      t.index "name_index", [:name], type: :unique
       t.timestamps
     end
   end
