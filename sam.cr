@@ -1,4 +1,5 @@
 require "jennifer"
+require "json"
 require "./src/jennifer_sqlite3_adapter"
 require "./spec/support/migrations/*"
 require "sam"

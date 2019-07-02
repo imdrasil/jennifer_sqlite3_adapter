@@ -18,6 +18,10 @@ describe Jennifer::SQLite3::SQLGenerator do
     end
   end
 
+  describe ".insert_on_duplicate" do
+    pending "add"
+  end
+
   describe ".update" do
     it do
       described_class.update(User.all, { "name" => "Peter" }).should eq("UPDATE users SET name = %s ")

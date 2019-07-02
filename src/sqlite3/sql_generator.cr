@@ -17,6 +17,10 @@ module Jennifer
         end
       end
 
+      def self.insert_on_duplicate(table, fields, rows : Int32, unique_fields, on_conflict)
+        raise BaseException.new("SQLite3 doesn't support UPSERT. Consider using plain REPLACE")
+      end
+
       # Generates update request depending on given query and hash options.
       def self.update(query, options : Hash)
         esc = escape_string(1)
@@ -58,6 +62,14 @@ module Jennifer
       # SQLite doesn't support JSON at all.
       def self.json_path(path : QueryBuilder::JSONSelector)
         raise BaseException.new("JSON selector isn't supported")
+      end
+
+      def self.values_expression(field)
+        "VALUES(#{field})"
+      end
+
+      def self.explain(query)
+        "EXPLAIN QUERY PLAN #{self.select(query)}"
       end
     end
   end

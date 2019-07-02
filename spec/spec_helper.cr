@@ -1,4 +1,5 @@
 require "spec"
+require "json"
 require "./jennifer_setup"
 require "./models"
 # require "factory"
@@ -21,6 +22,14 @@ def setup_jennifer
     conf.host = "."
     conf.adapter = "sqlite3"
     conf.db = "test.db"
+  end
+end
+
+def read_to_end(rs)
+  rs.each do
+    rs.column_names.size.times do
+      rs.read
+    end
   end
 end
 

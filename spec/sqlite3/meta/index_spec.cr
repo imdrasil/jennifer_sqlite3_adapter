@@ -31,8 +31,8 @@ describe Jennifer::SQLite3::Index do
   end
 
   describe "#type" do
-    it { user_indexes[0].type.should be_nil }
-    pending "add uniq index"
+    pending { user_indexes[0].type.should be_nil }
+    it { user_indexes[0].type.should eq(:unique) }
   end
 
   describe "#source" do

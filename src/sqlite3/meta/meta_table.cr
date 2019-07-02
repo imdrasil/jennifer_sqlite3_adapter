@@ -23,7 +23,8 @@ module Jennifer
       @indexes : Array(Index)?
       @foreign_keys : Array(ForeignKey)?
 
-      scope :table { |name| where { (_type == "table") & (_name == name) } }
+      scope :tables { where { _type == "table" } }
+      scope :table { |name| tables.where { _name == name } }
       scope :view { |name| where { (_type == "view") & (_name == name) } }
       scope :index { |name| index.where { (_name == name) } }
       scope :index { where { (_type == "index") } }
