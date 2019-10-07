@@ -17,7 +17,7 @@ describe Jennifer::SQLite3::Adapter do
 
     describe Time do
       it do
-        time = Time.now
+        time = Time.local
         user = User.create!({name: "User"})
         user.reload.created_at!.should be_close(time, 0.001.seconds)
       end
@@ -192,7 +192,7 @@ describe Jennifer::SQLite3::Adapter do
     it "execs query" do
       adapter.exec(
         "insert into users(name, admin, created_at, updated_at) values('new', 0, ?, ?)",
-        [Time.now, Time.now]
+        [Time.local, Time.local]
       )
     end
 
@@ -218,7 +218,7 @@ describe Jennifer::SQLite3::Adapter do
   describe "#upsert" do
     it "raises exception" do
       User.create({ name: "Ivan", age: 23 })
-      values = [["Ivan", 44, Time.now, Time.now]]
+      values = [["Ivan", 44, Time.local, Time.local]]
       expect_raises(Jennifer::BaseException, "SQLite3 doesn't support UPSERT. Consider using plain REPLACE") do
         User.all.upsert(%w(name admin created_at updated_at), values, %w(name)) { { :age => 1, :name => "a" } }
       end

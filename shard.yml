@@ -7,14 +7,15 @@ authors:
 dependencies:
   sqlite3:
     github: crystal-lang/crystal-sqlite3
+    version: "0.14.0"
 
 development_dependencies:
   jennifer:
     github: imdrasil/jennifer.cr
-    branch: release/0.8.0
+    branch: master
   sam:
     github: imdrasil/sam.cr
 
-crystal: 0.29.0
+crystal: 0.31.1
 
 license: MIT
