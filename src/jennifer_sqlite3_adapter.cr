@@ -46,7 +46,7 @@ module Jennifer
       end
 
       def translate_type(name : String)
-        TYPE_TRANSLATIONS[name]
+        TYPE_TRANSLATIONS[name.downcase]
       rescue e : KeyError
         raise BaseException.new("Unknown data alias #{name}")
       end
