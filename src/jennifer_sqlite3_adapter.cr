@@ -33,6 +33,14 @@ module Jennifer
         "timestamp" => "text",
       }
 
+      def prepare
+        super
+
+        with_connection do |conn|
+          conn.exec "PRAGMA foreign_keys = ON"
+        end
+      end
+
       def sql_generator
         SQLGenerator
       end
