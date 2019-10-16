@@ -4,6 +4,7 @@ require "./jennifer_setup"
 require "./models"
 # require "factory"
 require "./support/array_logger"
+require "./support/migrations/*"
 
 module Spec
   class_getter logger = ArrayLogger.new(STDOUT)
@@ -11,6 +12,18 @@ module Spec
   def self.adapter
     Jennifer::Adapter.adapter
   end
+end
+
+def schema_rollback
+  Jennifer::Adapter.adapter.rollback_transaction
+  yield
+ensure
+  (Jennifer::Model::Base.models - [Jennifer::Migration::Version]).each do |model_class|
+    Jennifer::Adapter.adapter.exec("DROP TABLE IF EXISTS #{model_class.table_name}")
+  end
+  Jennifer::Migration::Version.all.delete
+  Jennifer::Migration::Runner.migrate
+  Jennifer::Adapter.adapter.begin_transaction
 end
 
 def setup_jennifer
@@ -22,6 +35,7 @@ def setup_jennifer
     conf.host = "."
     conf.adapter = "sqlite3"
     conf.db = "test.db"
+    conf.verbose_migrations = false
   end
 end
 

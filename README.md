@@ -60,6 +60,14 @@ SQLite has no mechanism to alter existing table (except renaming it). Therefore 
 
 It is necessary to notice that all those operations keep all data and indexes.
 
+#### Foreign key
+
+At a startup adapter automatically enable foreign keys executing `PRAGMA foreign_keys = ON`.
+But be aware using migrations - as described above, some table manipulations will recreate a table.
+To avoid breaking of any foreign key, adapter will try to disable them until the end of a manipulation,
+but this is possible only outside of a transaction. Therefore in a such kind of migrations add
+`with_transaction false` at the class body to disable automatic transaction around migration methods.
+
 ## Contributing
 
 1. Fork it (<https://github.com/imdrasil/jennifer_sqlite3_adapter/fork>)
