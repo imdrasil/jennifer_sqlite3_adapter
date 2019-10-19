@@ -83,7 +83,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
         User.generate_list(2)
         Post.create(title: "User 0", text: "Text")
         Post.create(title: "User 1", text: "Text")
-        processor.add_foreign_key("users", "posts", "name", "title")
+        processor.add_foreign_key("users", "posts", "name", "title", "index_name", :restrict, :restrict)
 
         adapter.table_exists?("users").should be_true
         adapter.table_exists?("users_temp").should be_false

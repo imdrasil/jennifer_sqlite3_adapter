@@ -3,7 +3,7 @@ class CreatePost < Jennifer::Migration::Base
     create_table(:posts) do |t|
       t.string :title, { :null => false }
       t.text :text, { :null => false }
-      t.reference :user
+      t.reference :user, options: { :on_delete => :cascade }
       t.float :rating, { :default => 0.0f32 }
 
       t.timestamps

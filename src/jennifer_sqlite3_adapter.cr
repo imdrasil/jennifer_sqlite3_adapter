@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.2.0"
+    VERSION = "0.2.1"
 
     class Adapter < Adapter::Base
       alias EnumType = String
