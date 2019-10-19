@@ -18,4 +18,12 @@ describe Jennifer::SQLite3::ForeignKey do
   describe "#to_table" do
     it { fk.to_table.should eq("users") }
   end
+
+  describe "#on_update" do
+    it { fk.on_update.should eq(:restrict) }
+  end
+
+  describe "#on_delete" do
+    it { fk.on_delete.should eq(:cascade) }
+  end
 end

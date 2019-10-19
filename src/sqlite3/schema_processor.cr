@@ -60,14 +60,14 @@ module Jennifer
         end
       end
 
-      def add_foreign_key(from_table, to_table, column, primary_key, _name = nil, *, on_update = nil, on_delete = nil)
+      def add_foreign_key(from_table, to_table, column, primary_key, _name, on_update, on_delete)
         table = from_table
         ignore_foreign_keys do
           temp_table_name = "#{table}_temp"
           t = find_table(table)
 
           # Create new table with FK
-          fk = ForeignKey.new(to_table.to_s, column.to_s, primary_key.to_s, on_update: on_update, on_delete: on_delete)
+          fk = ForeignKey.new(to_table.to_s, column.to_s, primary_key.to_s, on_update, on_delete)
           create_table(temp_table_name, t.columns, t.foreign_keys + [fk])
 
           # Copy data
@@ -131,10 +131,8 @@ module Jennifer
             foreign_keys.each do |key|
               io << ","
               io << "FOREIGN KEY (" << key.column << ") REFERENCES " << key.to_table << "(" << key.primary_key << ")"
-              on_update = key.on_update || "RESTRICT"
-              io << " ON UPDATE " << on_update
-              on_delete = key.on_delete || "RESTRICT"
-              io << " ON DELETE " << on_delete
+              io << " ON UPDATE " << ::Jennifer::Adapter::SchemaProcessor::ON_EVENT_ACTIONS[key.on_update]
+              io << " ON DELETE " << ::Jennifer::Adapter::SchemaProcessor::ON_EVENT_ACTIONS[key.on_delete]
             end
             io << ')'
           end

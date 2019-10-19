@@ -18,7 +18,7 @@ def schema_rollback
   Jennifer::Adapter.adapter.rollback_transaction
   yield
 ensure
-  (Jennifer::Model::Base.models - [Jennifer::Migration::Version]).each do |model_class|
+  [Post, User].each do |model_class|
     Jennifer::Adapter.adapter.exec("DROP TABLE IF EXISTS #{model_class.table_name}")
   end
   Jennifer::Migration::Version.all.delete
