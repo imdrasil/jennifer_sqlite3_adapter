@@ -9,6 +9,7 @@ SQLite3 adapter for [Jennifer](https://github.com/imdrasil/jennifer.cr).
 dependencies:
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
+    version: 0.2.1
 ```
 2. Run `shards install`
 

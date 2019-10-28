@@ -1,6 +1,9 @@
 # :nodoc:
 class SQLite3::ResultSet
+  record Column, type : SQLite3::Type, name : String, length : Int32 = -1
+
   getter column_index
+  @columns : Array(Column)?
 
   def current_column
     columns[column_index]
@@ -8,5 +11,11 @@ class SQLite3::ResultSet
 
   def current_column_name
     column_name(column_index)
+  end
+
+  def columns
+    @columns ||= column_count.times.map do |index|
+      Column.new(LibSQLite3.column_type(self, index), column_name(index))
+    end.to_a
   end
 end
