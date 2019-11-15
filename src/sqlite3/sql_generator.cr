@@ -71,6 +71,18 @@ module Jennifer
       def self.explain(query)
         "EXPLAIN QUERY PLAN #{self.select(query)}"
       end
+
+      def self.quote(value : String)
+        "\'" + value.gsub('\'', "''") + "'"
+      end
+
+      def self.quote(value : Bool)
+        value ? 1 : 0
+      end
+
+      def self.quote(value : Time)
+        "'#{value.to_utc.to_s("%F %T.0")}'"
+      end
     end
   end
 end

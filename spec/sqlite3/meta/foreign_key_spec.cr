@@ -20,10 +20,10 @@ describe Jennifer::SQLite3::ForeignKey do
   end
 
   describe "#on_update" do
-    it { fk.on_update.should eq(:restrict) }
+    it { fk.on_update.should eq(Jennifer::Adapter::SchemaProcessor::FkEventActions::Restrict) }
   end
 
   describe "#on_delete" do
-    it { fk.on_delete.should eq(:cascade) }
+    it { fk.on_delete.should eq(Jennifer::Adapter::SchemaProcessor::FkEventActions::Cascade) }
   end
 end

@@ -128,11 +128,12 @@ module Jennifer
               column_definition(column.name, opts, io, true)
             end
 
+            translations = ::Jennifer::Adapter::SchemaProcessor::ON_EVENT_ACTION_TRANSLATIONS
             foreign_keys.each do |key|
               io << ","
               io << "FOREIGN KEY (" << key.column << ") REFERENCES " << key.to_table << "(" << key.primary_key << ")"
-              io << " ON UPDATE " << ::Jennifer::Adapter::SchemaProcessor::ON_EVENT_ACTIONS[key.on_update]
-              io << " ON DELETE " << ::Jennifer::Adapter::SchemaProcessor::ON_EVENT_ACTIONS[key.on_delete]
+              io << " ON UPDATE " << translations[key.on_update]
+              io << " ON DELETE " << translations[key.on_delete]
             end
             io << ')'
           end

@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.2.1"
+    VERSION = "0.2.2"
 
     class Adapter < Adapter::Base
       alias EnumType = String
@@ -32,6 +32,10 @@ module Jennifer
         "time"      => "text",
         "timestamp" => "text",
       }
+
+      def self.default_max_bind_vars_count
+        990
+      end
 
       def prepare
         super
