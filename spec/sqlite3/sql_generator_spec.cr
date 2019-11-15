@@ -1,15 +1,40 @@
 require "../spec_helper"
 
-def build_expression
+private def build_expression
   Jennifer::QueryBuilder::ExpressionBuilder.new("table")
 end
 
-def build_criteria
+private def build_criteria
   Jennifer::QueryBuilder::Criteria.new("f1", "tests")
+end
+
+private macro quote_example(value)
+  it do
+    executed = false
+    value = {{value}}
+    query = "SELECT #{described_class.quote(value)}"
+    adapter.query(query) do |rs|
+      rs.each do
+        result =
+          case value
+          when Time
+            rs.read(Time)
+          when Bool
+            rs.read(Bool)
+          else
+            rs.read
+          end
+        result.should eq(value)
+        executed = true
+      end
+    end
+    executed.should be_true
+  end
 end
 
 describe Jennifer::SQLite3::SQLGenerator do
   described_class = Jennifer::SQLite3::SQLGenerator
+  adapter = Jennifer::Adapter.adapter
 
   describe ".insert" do
     it do
@@ -63,5 +88,18 @@ describe Jennifer::SQLite3::SQLGenerator do
         described_class.json_path(Jennifer::QueryBuilder::Criteria.new("table", "field").take(1))
       end
     end
+  end
+
+  describe ".quote" do
+    quote_example(Time.utc(2010, 10, 10, 12, 34, 56))
+    quote_example(Time.utc(2010, 10, 10, 0, 0, 0))
+    quote_example(nil)
+    quote_example(true)
+    quote_example(false)
+    quote_example(%(foo))
+    quote_example(%(this has a \\))
+    quote_example(%(what's your "name"))
+    quote_example(1)
+    quote_example(1.0)
   end
 end
