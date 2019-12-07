@@ -14,20 +14,20 @@ module Jennifer
       alias EnumType = String
 
       TYPE_TRANSLATIONS = {
-        "bool"      => "integer",
+        "bool" => "integer",
 
-        "integer"   => "integer",
-        "bigint"    => "integer",
-        "short"     => "integer",
-        "tinyint"   => "integer",
+        "integer" => "integer",
+        "bigint"  => "integer",
+        "short"   => "integer",
+        "tinyint" => "integer",
 
-        "float"     => "real",
-        "double"    => "real",
-        "real"      => "real",
+        "float"  => "real",
+        "double" => "real",
+        "real"   => "real",
 
-        "text"      => "text",
-        "string"    => "text",
-        "varchar"   => "text",
+        "text"    => "text",
+        "string"  => "text",
+        "varchar" => "text",
 
         "time"      => "text",
         "timestamp" => "text",
@@ -80,7 +80,7 @@ module Jennifer
           .where { _tbl_name.in(tables) }
           .to_a
           .map do |table|
-            Record.new({ "table_name" => table.tbl_name, "count" => table.columns.size.to_i64 } of String => DBAny)
+            Record.new({"table_name" => table.tbl_name, "count" => table.columns.size.to_i64} of String => DBAny)
           end
       end
 

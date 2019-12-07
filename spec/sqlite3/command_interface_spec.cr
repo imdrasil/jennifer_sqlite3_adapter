@@ -2,6 +2,7 @@ require "../spec_helper"
 
 abstract class Jennifer::Adapter::DBCommandInterface
   getter last_command : Command?
+
   def execute(command)
     @last_command = command
   end

@@ -156,10 +156,10 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#with_table_lock" do
     it "adds log message" do
-      adapter.with_table_lock("any_table") {}
+      adapter.with_table_lock("any_table") { }
       Spec.logger.container[-2].should eq({
         sev: "DEBUG",
-        msg: "SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started."
+        msg: "SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started.",
       })
     end
   end
@@ -180,7 +180,7 @@ describe Jennifer::SQLite3::Adapter do
   describe "#update" do
     context "given object" do
       it "updates fields if they were changed" do
-        user = User.create({ name: "Adam" })
+        user = User.create({name: "Adam"})
         user.name = "new name"
         r = adapter.update(user)
         r.rows_affected.should eq(1)
@@ -217,17 +217,17 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#upsert" do
     it "raises exception" do
-      User.create({ name: "Ivan", age: 23 })
+      User.create({name: "Ivan", age: 23})
       values = [["Ivan", 44, Time.local, Time.local]]
       expect_raises(Jennifer::BaseException, "SQLite3 doesn't support UPSERT. Consider using plain REPLACE") do
-        User.all.upsert(%w(name admin created_at updated_at), values, %w(name)) { { :age => 1, :name => "a" } }
+        User.all.upsert(%w(name admin created_at updated_at), values, %w(name)) { {:age => 1, :name => "a"} }
       end
     end
   end
 
   describe "#delete" do
     it "removes record from db" do
-      User.create({ name: "Ivan", age: 23 })
+      User.create({name: "Ivan", age: 23})
       adapter.delete(User.all)
       User.all.count.should eq(0)
     end
@@ -235,7 +235,7 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#truncate" do
     it "raise an exception" do
-      User.create({ name: "Ivan", age: 23 })
+      User.create({name: "Ivan", age: 23})
       expect_raises(Jennifer::BaseException, "TRUNCATE command isn't supported") do
         adapter.truncate(User.table_name)
       end
@@ -244,7 +244,7 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#exists?" do
     it "returns true if record exists" do
-      User.create({ name: "Ivan", age: 23 })
+      User.create({name: "Ivan", age: 23})
       adapter.exists?(User.all).should be_true
     end
 
@@ -255,7 +255,7 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#count" do
     it "returns count of objects" do
-      User.create({ name: "Ivan", age: 23 })
+      User.create({name: "Ivan", age: 23})
       adapter.count(User.all).should eq(1)
     end
   end

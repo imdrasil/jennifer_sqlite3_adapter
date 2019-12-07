@@ -39,7 +39,6 @@ module Jennifer
 
           new_fields[fields.index(&.==(old_name.to_s)).as(Int32)] = new_name.to_s
 
-
           # Create new table
           create_table(temp_table_name, t.columns.reject(&.name.==(old_name.to_s)), t.foreign_keys)
 
@@ -122,7 +121,7 @@ module Jennifer
             io << "CREATE TABLE " << name << "("
             columns.each_with_index do |column, i|
               io << ", " if i != 0
-              opts = { :primary => column.id, :type => column.type } of Symbol => Bool | String
+              opts = {:primary => column.id, :type => column.type} of Symbol => Bool | String
               opts[:null] = false if column.nilable == false
               opts[:default] = column.default.not_nil! if column.default
               column_definition(column.name, opts, io, true)

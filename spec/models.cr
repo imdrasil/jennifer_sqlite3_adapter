@@ -7,7 +7,7 @@ class User < Model
     id: Primary32,
     name: String,
     age: Int32?,
-    admin: { type: Bool, default: false },
+    admin: {type: Bool, default: false},
     created_at: Time?,
     updated_at: Time?
   )
@@ -25,7 +25,7 @@ class Post < Model
     title: String,
     text: String,
     user_id: Int32?,
-    rating: { type: Float64, default: 0.0 },
+    rating: {type: Float64, default: 0.0},
     created_at: Time?,
     updated_at: Time?
   )

@@ -12,8 +12,8 @@ module Jennifer
       view_name "sqlite_master"
 
       mapping(
-        type: { type: String },
-        name: { type: String, primary: true },
+        type: {type: String},
+        name: {type: String, primary: true},
         tbl_name: String,
         rootpage: Int32,
         sql: String
