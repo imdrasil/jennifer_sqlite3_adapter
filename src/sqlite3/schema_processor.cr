@@ -7,6 +7,10 @@ module Jennifer
         adapter.exec "ALTER TABLE #{old_name.to_s} RENAME TO #{new_name.to_s}"
       end
 
+      def drop_index(table, name)
+        adapter.exec "DROP INDEX #{name}"
+      end
+
       def drop_column(table, name)
         ignore_foreign_keys do
           temp_table_name = "#{table}_temp"
