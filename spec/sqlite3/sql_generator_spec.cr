@@ -49,7 +49,7 @@ describe Jennifer::SQLite3::SQLGenerator do
 
   describe ".update" do
     it do
-      described_class.update(User.all, { "name" => "Peter" }).should eq("UPDATE users SET name = %s ")
+      described_class.update(User.all, {"name" => "Peter"}).should eq("UPDATE users SET name = %s ")
     end
   end
 

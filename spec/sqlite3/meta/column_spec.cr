@@ -5,9 +5,9 @@ describe Jennifer::SQLite3::Column do
 
   user_columns = [] of Jennifer::SQLite3::Column
 
-    Spec.adapter.query("pragma table_info(users)") do |rs|
-      rs.each { user_columns << described_class.new(rs) }
-    end
+  Spec.adapter.query("pragma table_info(users)") do |rs|
+    rs.each { user_columns << described_class.new(rs) }
+  end
 
   describe ".new" do
     it "reads all columns from pragma" do

@@ -32,7 +32,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
       it do
         schema_rollback do
           User.generate_list(2)
-          processor.change_column("users", "age", "new_age", { :type => :integer })
+          processor.change_column("users", "age", "new_age", {:type => :integer})
 
           adapter.table_exists?("users").should be_true
           adapter.table_exists?("users_temp").should be_false
@@ -48,7 +48,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
       it do
         schema_rollback do
           User.generate_list(2)
-          processor.change_column("users", "age", "age", { :type => :integer, :default => 12 })
+          processor.change_column("users", "age", "age", {:type => :integer, :default => 12})
 
           adapter.table_exists?("users").should be_true
           adapter.table_exists?("users_temp").should be_false
@@ -64,7 +64,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
       it do
         schema_rollback do
           User.generate_list(2)
-          processor.change_column("users", "age", "age", { :type => :float })
+          processor.change_column("users", "age", "age", {:type => :float})
 
           adapter.table_exists?("users").should be_true
           adapter.table_exists?("users_temp").should be_false
