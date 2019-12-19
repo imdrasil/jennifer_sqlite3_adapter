@@ -87,8 +87,7 @@ module Jennifer
         end
       end
 
-      def drop_foreign_key(from_table, name : String)
-        to_table = to_table_from_fk_name(from_table.to_s, name)
+      def drop_foreign_key(from_table, to_table, _name)
         table = from_table
         ignore_foreign_keys do
           temp_table_name = "#{table}_temp"
@@ -188,23 +187,6 @@ module Jennifer
 
       private def drop_table(table : String)
         drop_table(Migration::TableBuilder::DropTable.new(adapter, table))
-      end
-
-      # Format of system generated FK name is `fk_cr_tableA_tableB`.
-      private def table_names_from_fk(name)
-        name[6..-1]
-      end
-
-      private def to_table_from_fk_name(from_table, name)
-        part = table_names_from_fk(name)
-
-        if part.starts_with?(from_table)
-          part[(from_table.size + 1)..-1]
-        elsif part.ends_with?(from_table)
-          part[0...-(from_table.size + 1)]
-        else
-          raise ArgumentError.new("Bad foreign key name - #{name}")
-        end
       end
 
       private def find_table(name)
