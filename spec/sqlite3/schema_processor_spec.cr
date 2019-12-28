@@ -98,7 +98,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
     it do
       schema_rollback do
         Post.generate_list(2)
-        processor.drop_foreign_key("posts", "fk_cr_posts_users")
+        processor.drop_foreign_key("posts", "users", "fk_cr_11111")
 
         adapter.table_exists?("posts").should be_true
         adapter.table_exists?("posts_temp").should be_false
