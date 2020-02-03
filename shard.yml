@@ -8,7 +8,7 @@ authors:
 dependencies:
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: "0.14.0"
+    version: "0.15.0"
 
 development_dependencies:
   jennifer:
