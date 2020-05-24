@@ -5,7 +5,7 @@ require "sam"
 require "jennifer/sam"
 
 Jennifer::Config.configure do |conf|
-  conf.logger.level = Logger::ERROR
+  conf.logger = Log.for("db", :error)
   conf.user = "anyuser"
   conf.password = "anypassword"
   conf.host = "./"

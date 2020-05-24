@@ -157,15 +157,13 @@ describe Jennifer::SQLite3::Adapter do
   describe "#with_table_lock" do
     it "adds log message" do
       adapter.with_table_lock("any_table") { }
-      Spec.logger.container[-2].should eq({
-        sev: "DEBUG",
-        msg: "SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started.",
-      })
+      Spec.logger_backend.entries[-2].severity.debug?.should be_true
+      Spec.logger_backend.entries[-2].message.should eq("SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started.")
     end
   end
 
   describe "#command_interface" do
-    it { adapter.class.command_interface.is_a?(Jennifer::SQLite3::CommandInterface).should be_true }
+    it { adapter.command_interface.is_a?(Jennifer::SQLite3::CommandInterface).should be_true }
   end
 
   describe "#explain" do

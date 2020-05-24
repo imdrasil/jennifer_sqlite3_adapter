@@ -34,7 +34,7 @@ end
 
 describe Jennifer::SQLite3::SQLGenerator do
   described_class = Jennifer::SQLite3::SQLGenerator
-  adapter = Jennifer::Adapter.adapter
+  adapter = Jennifer::Adapter.default_adapter
 
   describe ".insert" do
     it do
