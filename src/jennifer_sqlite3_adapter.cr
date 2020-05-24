@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.2.2"
+    VERSION = "0.3.0"
 
     class Adapter < Adapter::Base
       alias EnumType = String
@@ -35,6 +35,10 @@ module Jennifer
 
       def self.default_max_bind_vars_count
         990
+      end
+
+      def self.protocol : String
+        "sqlite3"
       end
 
       def prepare
@@ -115,8 +119,10 @@ module Jennifer
 
       def with_table_lock(table : String, type : String = "default", &block)
         transaction do |t|
-          Config.logger.debug("SQLite3 doesn't support manual locking table from prepared statement." \
-                              " Instead of this only transaction was started.")
+          config.logger.debug do
+            "SQLite3 doesn't support manual locking table from prepared statement." \
+              " Instead of this only transaction was started."
+          end
           yield t
         end
       end
@@ -139,8 +145,8 @@ module Jennifer
         plan.map(&.join("|")).join("\n")
       end
 
-      def self.command_interface
-        @@command_interface ||= CommandInterface.new(Config.instance)
+      def command_interface
+        @command_interface ||= CommandInterface.new(config)
       end
     end
   end

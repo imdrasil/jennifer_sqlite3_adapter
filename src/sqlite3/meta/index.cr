@@ -65,7 +65,7 @@ module Jennifer
       end
 
       private def adapter
-        Jennifer::Adapter.adapter
+        Jennifer::Adapter.default_adapter
       end
     end
   end

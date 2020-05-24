@@ -169,7 +169,7 @@ module Jennifer
         io << " PRIMARY KEY" if options[:primary]?
         if options.has_key?(:default)
           io << " DEFAULT "
-          io << (as_is ? options[:default] : self.adapter.class.t(options[:default]))
+          io << (as_is ? options[:default] : adapter_class.t(options[:default]))
         end
         io << " AUTOINCREMENT" if options[:auto_increment]?
       end
