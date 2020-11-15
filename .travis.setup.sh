@@ -11,4 +11,4 @@ make
 sudo make install
 cd ../
 sqlite3 --version
-crystal sam.cr --error-trace -- db:setup
+crystal sam.cr db:setup
