@@ -9,7 +9,7 @@ module Jennifer
           s << "INSERT INTO " << obj.class.table_name
           if !opts[:fields].empty?
             s << "("
-            opts[:fields].join(", ", s)
+            opts[:fields].join(s, ", ")
             s << ") VALUES (" << escape_string(opts[:fields].size) << ") "
           else
             s << " DEFAULT VALUES"
@@ -27,7 +27,7 @@ module Jennifer
         String.build do |s|
           s << "UPDATE " << query.table
           s << " SET "
-          options.join(", ", s) { |(k, _)| s << k << " = " << esc }
+          options.join(s, ", ") { |(k, _)| s << k << " = " << esc }
           s << " "
           where_clause(s, query.tree)
         end

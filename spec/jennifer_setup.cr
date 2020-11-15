@@ -20,8 +20,8 @@ def setup_jennifer
     conf.db = "test.db"
     conf.verbose_migrations = false
   end
+
+  Log.setup "db", :debug, Spec.logger_backend
 end
 
 setup_jennifer
-
-Log.builder.bind "*", :debug, Spec.logger_backend

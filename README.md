@@ -4,13 +4,19 @@ SQLite3 adapter for [Jennifer](https://github.com/imdrasil/jennifer.cr).
 
 ## Installation
 
-1. Add the dependency to your `shard.yml`:
+1. Add the dependencies to your `shard.yml`:
 ```yaml
 dependencies:
+  sqlite3:
+    github: crystal-lang/crystal-sqlite3
+    version: "0.16.0"
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
     version: "~> 0.3.0"
 ```
+
+> Current adapter version is tested with `0.16.0` sqlite3 driver but other versions may also work
+
 2. Run `shards install`
 
 ## Usage
@@ -28,9 +34,7 @@ Jennifer::Config.configure do |conf|
 end
 ```
 
-`user` and `password` configuration is not required as database is SQLite doesn't provide db-user authentication and they are ignored. `host` options is used to specify path to db-file, `db` - file name.
-
-As
+`user` and `password` configurations are not required as SQLite doesn't provide user authentication and they are ignored. `host` options is used to specify database file folder path, `db` - file name.
 
 ### Supported data types
 

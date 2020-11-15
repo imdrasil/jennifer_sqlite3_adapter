@@ -1,19 +1,18 @@
 name: jennifer_sqlite3_adapter
 version: 0.3.0
-crystal: 0.34.0
+crystal: 0.35.1
 
 authors:
   - Roman Kalnytskyi <moranibaca@gmail.com>
 
-dependencies:
+development_dependencies:
   sqlite3:
     github: crystal-lang/crystal-sqlite3
     version: "0.16.0"
-
-development_dependencies:
   jennifer:
     github: imdrasil/jennifer.cr
-    version: "0.9.0"
+    # version: "0.9.0"
+    branch: "master"
   sam:
     github: imdrasil/sam.cr
 
