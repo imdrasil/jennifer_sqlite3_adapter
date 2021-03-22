@@ -174,7 +174,7 @@ module Jennifer
         io << " AUTOINCREMENT" if options[:auto_increment]?
       end
 
-      private def index_type_translate(name : Symbol?)
+      private def index_type_translate(name)
         case name
         when :unique, :uniq
           "UNIQUE "
