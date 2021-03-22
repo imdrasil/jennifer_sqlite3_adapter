@@ -57,12 +57,8 @@ module Jennifer
         @schema_processor ||= SchemaProcessor.new(self)
       end
 
-      def translate_type(name : Symbol)
-        translate_type(name.to_s)
-      end
-
-      def translate_type(name : String)
-        TYPE_TRANSLATIONS[name.downcase]
+      def translate_type(name)
+        TYPE_TRANSLATIONS[name.to_s.downcase]
       rescue e : KeyError
         raise BaseException.new("Unknown data alias #{name}")
       end
@@ -104,7 +100,7 @@ module Jennifer
         MetaTable.table(table).first.try(&.columns.any?(&.name.==(name.to_s))) || false
       end
 
-      def foreign_key_exists?(from_table : String, to_table : String? = nil, column = nil, name : String? = nil) : Bool
+      def foreign_key_exists?(from_table, to_table = nil, column = nil, name : String? = nil) : Bool
         raise ArgumentError.new("SQLite3 adapter doesn't support ") if name
         table = MetaTable.table(from_table).first
         return false unless table && (to_table || column)
