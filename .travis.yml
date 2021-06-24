@@ -1,4 +1,0 @@
-language: crystal
-dist: xenial
-sudo: required
-before_script: bash .travis.setup.sh

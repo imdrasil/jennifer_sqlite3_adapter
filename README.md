@@ -9,13 +9,13 @@ SQLite3 adapter for [Jennifer](https://github.com/imdrasil/jennifer.cr).
 dependencies:
   sqlite3:
     github: crystal-lang/crystal-sqlite3
-    version: "0.16.0"
+    version: "0.18.0"
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
-    version: "~> 0.3.0"
+    version: "~> 0.3.1"
 ```
 
-> Current adapter version is tested with `0.16.0` sqlite3 driver but other versions may also work
+> Current adapter version is tested with `0.18.0` sqlite3 driver but other versions may also work
 
 2. Run `shards install`
 

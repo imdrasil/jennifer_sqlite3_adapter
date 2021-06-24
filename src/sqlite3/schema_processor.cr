@@ -4,7 +4,7 @@ module Jennifer
   module SQLite3
     class SchemaProcessor < Adapter::SchemaProcessor
       def rename_table(old_name, new_name)
-        adapter.exec "ALTER TABLE #{old_name.to_s} RENAME TO #{new_name.to_s}"
+        adapter.exec "ALTER TABLE #{old_name} RENAME TO #{new_name}"
       end
 
       def drop_index(table, name)

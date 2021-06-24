@@ -169,9 +169,9 @@ describe Jennifer::SQLite3::Adapter do
   describe "#explain" do
     it do
       result = adapter.explain(Jennifer::Query["users"].join("posts") { |origin, joined| joined._user_id == origin._id }).split("\n")
+      result.size.should eq(3)
       result[0].should eq("selectid|order|from|detail")
-      result[1].should eq("0|0|1|SCAN TABLE posts")
-      result[2].should eq("0|1|0|SEARCH TABLE users USING INTEGER PRIMARY KEY (rowid=?)")
+      result[1].should match(/\d\|\d\|\d\|SCAN TABLE posts/)
     end
   end
 
