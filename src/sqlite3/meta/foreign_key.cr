@@ -9,14 +9,14 @@ module Jennifer
         on_delete : Jennifer::Adapter::SchemaProcessor::FkEventActions
 
       def initialize(rs)
-        id = rs.read(Int32)
-        index = rs.read(Int32)
+        rs.read(Int32) # id
+        rs.read(Int32) # index
         @to_table = rs.read(String)
         @column = rs.read(String)
         @primary_key = rs.read(String)
         @on_update = Jennifer::Adapter::SchemaProcessor::FkEventActions.parse(rs.read(String))
         @on_delete = Jennifer::Adapter::SchemaProcessor::FkEventActions.parse(rs.read(String))
-        match = rs.read(String)
+        rs.read(String) # match
       end
 
       def initialize(@to_table, @column, @primary_key, @on_update, @on_delete)

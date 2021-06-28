@@ -73,7 +73,7 @@ module Jennifer
       end
 
       def self.quote(value : String)
-        "\'" + value.gsub('\'', "''") + "'"
+        "'#{value.gsub('\'', "''")}'"
       end
 
       def self.quote(value : Bool)

@@ -6,7 +6,7 @@ module Jennifer
       getter type : String
 
       def initialize(rs)
-        index = rs.read(Int32)
+        rs.read(Int32) # index
         @name = rs.read(String)
         @type = rs.read(String)
         @nilable = !rs.read(Bool)

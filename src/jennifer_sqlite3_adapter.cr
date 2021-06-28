@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.3.0"
+    VERSION = "0.3.1"
 
     class Adapter < Adapter::Base
       alias EnumType = String
@@ -117,7 +117,7 @@ module Jennifer
         transaction do |t|
           config.logger.debug do
             "SQLite3 doesn't support manual locking table from prepared statement." \
-              " Instead of this only transaction was started."
+            " Instead of this only transaction was started."
           end
           yield t
         end

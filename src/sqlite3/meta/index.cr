@@ -11,12 +11,12 @@ module Jennifer
         @desc_order : Bool
 
         def initialize(rs)
-          column_rank = rs.read(Int32)
-          column_index = rs.read(Int32)
+          rs.read(Int32) # column_rank
+          rs.read(Int32) # column_index
           @column = rs.read(String?)
           @desc_order = rs.read(Bool)
-          collating_seq_name = rs.read(String)
-          key_column = rs.read(Bool)
+          rs.read(String) # collating_seq_name
+          rs.read(Bool)   # key_column
         end
 
         def column!
@@ -41,7 +41,7 @@ module Jennifer
       @meta : Array(Meta)?
 
       def initialize(rs)
-        id = rs.read(Int32)
+        rs.read(Int32) # id
         @name = rs.read(String)
         @type = :unique if rs.read(Bool)
         @source = rs.read(String)

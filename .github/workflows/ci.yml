@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+  schedule:
+    - cron: "0 7 * * 1"
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install Crystal
+        uses: oprypin/install-crystal@v1
+
+      - name: Donwload sources
+        uses: actions/checkout@v2
+
+      - name: Check formatting
+        run: crystal tool format --check
+
+      - name: Install dependencies
+        # TODO: remove --ignore-crystal-version once all packages will be updated
+        run: shards install --ignore-crystal-version
+
+      - name: Run linter
+        run: ./bin/ameba
+
+      - name: Install SQLite3
+        run: bash .github/install_sqlite.sh
+
+      - name: Run migrations
+        run: crystal sam.cr db:setup
+
+      - name: Run specs
+        run: crystal spec
