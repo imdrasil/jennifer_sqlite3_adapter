@@ -21,7 +21,7 @@ dependencies:
 
 ## Usage
 
-This shard supports Jennifer `0.9.0` and above. It is tested with SQLite `3.22.0` version.
+This shard supports Jennifer `0.11.0` and above. It is tested with SQLite `3.36.0` version. Some of features may not work on older versions.
 
 ```crystal
 require "jennifer"

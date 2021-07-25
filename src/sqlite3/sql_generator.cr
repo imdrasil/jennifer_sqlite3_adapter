@@ -18,7 +18,23 @@ module Jennifer
       end
 
       def self.insert_on_duplicate(table, fields, rows : Int32, unique_fields, on_conflict)
-        raise BaseException.new("SQLite3 doesn't support UPSERT. Consider using plain REPLACE")
+        String.build do |io|
+          io << "INSERT INTO " << table << " ("
+          fields.join(io, ", ")
+          escaped_row = "(" + escape_string(fields.size) + ")"
+          io << ") VALUES "
+          rows.times.join(io, ", ") { io << escaped_row }
+          io << " ON CONFLICT (" << unique_fields.join(", ") << ") "
+          if on_conflict.empty?
+            io << "DO NOTHING"
+          else
+            io << "DO UPDATE SET "
+            on_conflict.each_with_index do |(field, value), index|
+              io << ", " if index != 0
+              io << field_assign_statement(field.to_s, value)
+            end
+          end
+        end
       end
 
       # Generates update request depending on given query and hash options.
@@ -64,8 +80,12 @@ module Jennifer
         raise BaseException.new("JSON selector isn't supported")
       end
 
-      def self.values_expression(field)
-        "VALUES(#{field})"
+      # def self.values_expression(field)
+      #   "VALUES(#{field})"
+      # end
+
+      def self.values_expression(field : Symbol)
+        "excluded.#{field}"
       end
 
       def self.explain(query)
