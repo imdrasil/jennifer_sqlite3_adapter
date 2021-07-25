@@ -215,11 +215,19 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#upsert" do
     it "raises exception" do
-      User.create({name: "Ivan", age: 23})
-      values = [["Ivan", 44, Time.local, Time.local]]
-      expect_raises(Jennifer::BaseException, "SQLite3 doesn't support UPSERT. Consider using plain REPLACE") do
-        User.all.upsert(%w(name admin created_at updated_at), values, %w(name)) { {:age => 1, :name => "a"} }
-      end
+      user = User.create({name: "Ivan", age: 23})
+      values = [
+        ["Ivan", 44, Time.local, Time.local],
+        ["Natan", 30, Time.local, Time.local],
+      ]
+      User.all.upsert(%w(name age created_at updated_at), values, %w(name)) { {:age => 1, :name => "a"} }
+      user.reload
+      added_user = User.all.last!
+
+      user.name.should eq("a")
+      user.age.should eq(1)
+      added_user.name.should eq("Natan")
+      added_user.age.should eq(30)
     end
   end
 

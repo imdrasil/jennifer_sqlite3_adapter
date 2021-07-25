@@ -23,8 +23,7 @@ jobs:
         run: crystal tool format --check
 
       - name: Install dependencies
-        # TODO: remove --ignore-crystal-version once all packages will be updated
-        run: shards install --ignore-crystal-version
+        run: shards install
 
       - name: Run linter
         run: ./bin/ameba
