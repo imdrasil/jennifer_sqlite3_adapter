@@ -80,10 +80,6 @@ module Jennifer
         raise BaseException.new("JSON selector isn't supported")
       end
 
-      # def self.values_expression(field)
-      #   "VALUES(#{field})"
-      # end
-
       def self.values_expression(field : Symbol)
         "excluded.#{field}"
       end
