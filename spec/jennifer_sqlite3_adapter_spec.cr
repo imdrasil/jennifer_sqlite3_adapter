@@ -214,7 +214,7 @@ describe Jennifer::SQLite3::Adapter do
   end
 
   describe "#upsert" do
-    it "raises exception" do
+    it "correctly executes ON CONFLICT DO UPDATE" do
       user = User.create({name: "Ivan", age: 23})
       values = [
         ["Ivan", 44, Time.local, Time.local],
@@ -228,6 +228,23 @@ describe Jennifer::SQLite3::Adapter do
       user.age.should eq(1)
       added_user.name.should eq("Natan")
       added_user.age.should eq(30)
+    end
+
+    it "correctly executes ON CONFLICT IGNORE" do
+      user = User.create({name: "Ivan", age: 23})
+      values = [
+        ["Ivan", 44, Time.local, Time.local],
+        ["Natan", 30, Time.local, Time.local],
+      ]
+      User.all.upsert(%w(name age created_at updated_at), values, %w(name))
+      user.reload
+      added_user = User.all.last!
+
+      user.name.should eq("IVAN")
+      user.age.should eq(23)
+      added_user.name.should eq("Natan")
+      added_user.age.should eq(30)
+      User.all.count.should eq(2)
     end
   end
 
