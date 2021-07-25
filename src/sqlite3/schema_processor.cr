@@ -11,29 +11,6 @@ module Jennifer
         adapter.exec "DROP INDEX #{name}"
       end
 
-      def drop_column(table, name)
-        ignore_foreign_keys do
-          temp_table_name = "#{table}_temp"
-          t = find_table(table)
-          columns = t.columns.reject(&.name.==(name.to_s))
-
-          # Create new table
-          create_table(temp_table_name, columns, t.foreign_keys)
-
-          # Copy data
-          copy_data(temp_table_name, table, columns.map(&.name))
-
-          # Drop old table
-          drop_table(table)
-
-          # Rename new table
-          rename_table(temp_table_name, table)
-
-          # Add indexes
-          create_indexes(t)
-        end
-      end
-
       def change_column(table, old_name, new_name, opts : Hash)
         ignore_foreign_keys do
           temp_table_name = "#{table}_temp"
