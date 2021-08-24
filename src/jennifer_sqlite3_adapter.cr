@@ -8,7 +8,7 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.3.1"
+    VERSION = "0.3.2"
 
     class Adapter < Adapter::Base
       alias EnumType = String
@@ -101,12 +101,16 @@ module Jennifer
       end
 
       def foreign_key_exists?(from_table, to_table = nil, column = nil, name : String? = nil) : Bool
-        raise ArgumentError.new("SQLite3 adapter doesn't support ") if name
+        raise ArgumentError.new("SQLite3 adapter doesn't support #foreign_key_exists? with key name") if name
+
         table = MetaTable.table(from_table).first
         return false unless table && (to_table || column)
 
+        to_table = to_table.to_s if to_table
+        column = column.to_s if column
         table.foreign_keys.any? do |fk|
           result = true
+          puts fk.inspect
           result &= fk.to_table == to_table if to_table
           result &= fk.column == column if column
           result

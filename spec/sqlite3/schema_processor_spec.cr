@@ -103,7 +103,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
         adapter.table_exists?("posts").should be_true
         adapter.table_exists?("posts_temp").should be_false
         Post.all.count.should eq(2)
-        # adapter.index_exists?("users", "name_index").should be_true
+        adapter.index_exists?("users", "name_index").should be_true
         master_class.table("posts").first!.foreign_keys.should be_empty
       end
     end

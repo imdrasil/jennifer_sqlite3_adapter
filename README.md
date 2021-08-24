@@ -12,7 +12,7 @@ dependencies:
     version: "0.18.0"
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
-    version: "~> 0.3.1"
+    version: "~> 0.3.2"
 ```
 
 > Current adapter version is tested with `0.18.0` sqlite3 driver but other versions may also work
