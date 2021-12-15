@@ -12,7 +12,7 @@ dependencies:
     version: "0.18.0"
   jennifer_sqlite3_adapter:
     github: imdrasil/jennifer_sqlite3_adapter
-    version: "~> 0.3.2"
+    version: "~> 0.4.0"
 ```
 
 > Current adapter version is tested with `0.18.0` sqlite3 driver but other versions may also work
@@ -21,7 +21,7 @@ dependencies:
 
 ## Usage
 
-This shard supports Jennifer `0.11.0` and above. It is tested with SQLite `3.36.0` version. Some of features may not work on older versions.
+This shard supports Jennifer `0.12.0` and above. It is tested with SQLite `3.36.0` version. Some of features may not work on older versions.
 
 ```crystal
 require "jennifer"
