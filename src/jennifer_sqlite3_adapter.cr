@@ -8,9 +8,11 @@ require "./sqlite3/meta/meta_table"
 module Jennifer
   module SQLite3
     # Library version.
-    VERSION = "0.3.2"
+    VERSION = "0.4.0"
 
     class Adapter < Adapter::Base
+      include ::Jennifer::Adapter::RequestMethods
+
       alias EnumType = String
 
       TYPE_TRANSLATIONS = {
@@ -110,7 +112,6 @@ module Jennifer
         column = column.to_s if column
         table.foreign_keys.any? do |fk|
           result = true
-          puts fk.inspect
           result &= fk.to_table == to_table if to_table
           result &= fk.column == column if column
           result

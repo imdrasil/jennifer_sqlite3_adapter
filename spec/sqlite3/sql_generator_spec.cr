@@ -39,7 +39,7 @@ describe Jennifer::SQLite3::SQLGenerator do
   describe ".insert" do
     it do
       described_class.insert(User.build({name: "User"}))
-        .should eq("INSERT INTO users(name, age, admin, created_at, updated_at) VALUES (%s, %s, %s, %s, %s) ")
+        .should eq(%(INSERT INTO "users"("name", "age", "admin", "created_at", "updated_at") VALUES (%s, %s, %s, %s, %s) ))
     end
   end
 
@@ -49,7 +49,7 @@ describe Jennifer::SQLite3::SQLGenerator do
 
   describe ".update" do
     it do
-      described_class.update(User.all, {"name" => "Peter"}).should eq("UPDATE users SET name = %s ")
+      described_class.update(User.all, {"name" => "Peter"}).should eq(%(UPDATE "users" SET "name" = %s ))
     end
   end
 
@@ -63,8 +63,8 @@ describe Jennifer::SQLite3::SQLGenerator do
       end
 
       it do
-        build_criteria.asc.as_sql.should eq("tests.f1 ASC")
-        build_criteria.desc.as_sql.should eq("tests.f1 DESC")
+        build_criteria.asc.as_sql.should eq(%("tests"."f1" ASC))
+        build_criteria.desc.as_sql.should eq(%("tests"."f1" DESC))
       end
     end
   end
