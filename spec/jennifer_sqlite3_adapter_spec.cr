@@ -207,7 +207,7 @@ describe Jennifer::SQLite3::Adapter do
       result = adapter.explain(Jennifer::Query["users"].join("posts") { |origin, joined| joined._user_id == origin._id }).split("\n")
       result.size.should eq(3)
       result[0].should eq("selectid|order|from|detail")
-      result[1].should match(/\d\|\d\|\d\|SCAN TABLE posts/)
+      result[1].should match(/\d\|\d\|\d\|SCAN posts/)
     end
   end
 
