@@ -71,7 +71,7 @@ describe Jennifer::SQLite3::SchemaProcessor do
           adapter.column_exists?("users", "age").should be_true
           User.all.count.should eq(2)
           adapter.index_exists?("users", "name_index").should be_true
-          master_class.table("users").first!.columns.find(&.name.==("age")).not_nil!.type.should eq("real")
+          master_class.table("users").first!.columns.find(&.name.==("age")).not_nil!.type.should eq("float")
         end
       end
     end
