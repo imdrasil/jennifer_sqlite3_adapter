@@ -31,7 +31,7 @@ module Jennifer
         "string"  => "text",
         "varchar" => "text",
 
-        "time"      => "text",
+        "date_time" => "text",
         "timestamp" => "text",
       }
 

@@ -55,7 +55,7 @@ describe Jennifer::SQLite3::Adapter do
 
     describe "text" do
       it do
-        %i(text string varchar time timestamp).each { |type| adapter.translate_type(type).should eq("text") }
+        %i(text string varchar date_time timestamp).each { |type| adapter.translate_type(type).should eq("text") }
       end
     end
   end
