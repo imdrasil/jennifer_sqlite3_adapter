@@ -30,6 +30,7 @@ module Jennifer
         "text"    => "text",
         "string"  => "text",
         "varchar" => "text",
+        "blob"    => "blob",
 
         "time"      => "text",
         "timestamp" => "text",
@@ -62,7 +63,7 @@ module Jennifer
       def translate_type(name)
         TYPE_TRANSLATIONS[name.to_s.downcase]
       rescue e : KeyError
-        raise BaseException.new("Unknown data alias #{name}")
+        raise BaseException.new("Unknown data alias #{name}, have #{TYPE_TRANSLATIONS.keys}")
       end
 
       def default_type_size(name); end
