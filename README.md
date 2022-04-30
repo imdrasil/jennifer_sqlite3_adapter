@@ -51,7 +51,7 @@ end
 | `#text` | `TEXT` | `String` |
 | `#string` | `TEXT` | `String` |
 | `#varchar` | `TEXT` | `String` |
-| `#time` | `TEXT` | `Time` |
+| `#date_time` | `TEXT` | `Time` |
 | `#timestamp` | `TEXT` | `Time` |
 
 ### Altering table

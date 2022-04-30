@@ -32,7 +32,7 @@ module Jennifer
         "varchar" => "text",
         "blob"    => "blob",
 
-        "time"      => "text",
+        "date_time" => "text",
         "timestamp" => "text",
       }
 
