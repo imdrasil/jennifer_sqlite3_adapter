@@ -1,8 +1,14 @@
 set -exo pipefail
 
-sudo apt-get remove sqlite3
+if [-z "$SQLITE_VERSION"]; then
+  sudo apt-get remove sqlite3
 
-wget https://sqlite.org/2021/sqlite-tools-linux-x86-3360000.zip
-unzip sqlite-tools-linux-x86-3360000.zip
-sudo cp sqlite-tools-linux-x86-3360000/* /usr/bin
+  FOLDER_NAME="sqlite-tools-linux-x86-$SQLITE_VERSION"
+
+  wget "https://sqlite.org/$SQLITE_YEAR/$FOLDER_NAME.zip"
+  unzip "$FOLDER_NAME.zip"
+  sudo cp "$FOLDER_NAME/*" /usr/bin
+fi
+
+# 3.31.1 2020-01-27 by default
 sqlite3 --version

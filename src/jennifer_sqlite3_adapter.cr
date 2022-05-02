@@ -16,24 +16,27 @@ module Jennifer
       alias EnumType = String
 
       TYPE_TRANSLATIONS = {
-        "bool" => "integer",
-
         "integer" => "integer",
         "bigint"  => "integer",
         "short"   => "integer",
         "tinyint" => "integer",
 
-        "float"  => "real",
-        "double" => "real",
-        "real"   => "real",
+        "float"   => "float",
+        "decimal" => "decimal",
 
         "text"    => "text",
-        "string"  => "text",
-        "varchar" => "text",
-        "blob"    => "blob",
+        "string"  => "varchar",
+        "varchar" => "varchar",
 
-        "date_time" => "text",
-        "timestamp" => "text",
+        "blob"    => "blob",
+        "boolean" => "boolean",
+        "bool"    => "boolean",
+        "json"    => "json",
+
+        "date"      => "date",
+        "date_time" => "datetime",
+        "datetime"  => "datetime",
+        "timestamp" => "datetime",
       }
 
       def self.default_max_bind_vars_count

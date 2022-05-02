@@ -36,26 +36,62 @@ describe Jennifer::SQLite3::Adapter do
     context "with missing type" do
       it do
         expect_raises(Jennifer::BaseException) do
-          adapter.translate_type(:decimal)
+          adapter.translate_type(:xml)
         end
       end
     end
 
     describe "integer" do
       it do
-        %i(bool integer bigint short tinyint).each { |type| adapter.translate_type(type).should eq("integer") }
+        %i(integer bigint short tinyint).each { |type| adapter.translate_type(type).should eq("integer") }
       end
     end
 
-    describe "real" do
+    describe "boolean" do
       it do
-        %i(float double real).each { |type| adapter.translate_type(type).should eq("real") }
+        %i(bool).each { |type| adapter.translate_type(type).should eq("boolean") }
+      end
+    end
+
+    describe "float" do
+      it do
+        %i(float).each { |type| adapter.translate_type(type).should eq("float") }
+      end
+    end
+
+    describe "decimal" do
+      it do
+        %i(decimal).each { |type| adapter.translate_type(type).should eq("decimal") }
       end
     end
 
     describe "text" do
       it do
-        %i(text string varchar date_time timestamp).each { |type| adapter.translate_type(type).should eq("text") }
+        %i(text).each { |type| adapter.translate_type(type).should eq("text") }
+      end
+    end
+
+    describe "varchar" do
+      it do
+        %i(string varchar).each { |type| adapter.translate_type(type).should eq("varchar") }
+      end
+    end
+
+    describe "json" do
+      it do
+        %i(json).each { |type| adapter.translate_type(type).should eq("json") }
+      end
+    end
+
+    describe "date" do
+      it do
+        %i(date).each { |type| adapter.translate_type(type).should eq("date") }
+      end
+    end
+
+    describe "date_time" do
+      it do
+        %i(date_time timestamp).each { |type| adapter.translate_type(type).should eq("datetime") }
       end
     end
   end
@@ -158,7 +194,10 @@ describe Jennifer::SQLite3::Adapter do
     it "adds log message" do
       adapter.with_table_lock("any_table") { }
       Spec.logger_backend.entries[-2].severity.debug?.should be_true
-      Spec.logger_backend.entries[-2].message.should eq("SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started.")
+      Spec.logger_backend.entries[-2].message.should eq(
+        "SQLite3 doesn't support manual locking table from prepared statement. " \
+        "Instead of this only transaction was started."
+      )
     end
   end
 
