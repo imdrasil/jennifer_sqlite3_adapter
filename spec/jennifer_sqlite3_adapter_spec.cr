@@ -194,7 +194,10 @@ describe Jennifer::SQLite3::Adapter do
     it "adds log message" do
       adapter.with_table_lock("any_table") { }
       Spec.logger_backend.entries[-2].severity.debug?.should be_true
-      Spec.logger_backend.entries[-2].message.should eq("SQLite3 doesn't support manual locking table from prepared statement. Instead of this only transaction was started.")
+      Spec.logger_backend.entries[-2].message.should eq(
+        "SQLite3 doesn't support manual locking table from prepared statement. " \
+        "Instead of this only transaction was started."
+      )
     end
   end
 
@@ -207,7 +210,7 @@ describe Jennifer::SQLite3::Adapter do
       result = adapter.explain(Jennifer::Query["users"].join("posts") { |origin, joined| joined._user_id == origin._id }).split("\n")
       result.size.should eq(3)
       result[0].should eq("selectid|order|from|detail")
-      result[1].should match(/\d\|\d\|\d\|SCAN posts/)
+      result[1].should match(/\d\|\d\|\d\|SCAN TABLE posts/)
     end
   end
 

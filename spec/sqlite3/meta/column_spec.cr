@@ -32,7 +32,7 @@ describe Jennifer::SQLite3::Column do
 
   describe "#type" do
     it { user_columns[1].type.should eq("varchar") }
-    it { user_columns[2].type.should eq("INTEGER") }
+    it { user_columns[2].type.should eq("integer") }
   end
 
   describe "#name" do

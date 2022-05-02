@@ -21,21 +21,21 @@ module Jennifer
         "short"   => "integer",
         "tinyint" => "integer",
 
-        "float"  => "float",
-        "decimal"  => "decimal",
+        "float"   => "float",
+        "decimal" => "decimal",
 
         "text"    => "text",
         "string"  => "varchar",
         "varchar" => "varchar",
 
-        "blob" => "blob",
+        "blob"    => "blob",
         "boolean" => "boolean",
-        "bool" => "boolean",
-        "json" => "json",
+        "bool"    => "boolean",
+        "json"    => "json",
 
-        "date" => "date",
+        "date"      => "date",
         "date_time" => "datetime",
-        "datetime" => "datetime",
+        "datetime"  => "datetime",
         "timestamp" => "datetime",
       }
 
