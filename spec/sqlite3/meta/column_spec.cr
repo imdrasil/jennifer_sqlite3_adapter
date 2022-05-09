@@ -11,7 +11,9 @@ describe Jennifer::SQLite3::Column do
 
   describe ".new" do
     it "reads all columns from pragma" do
-      user_columns.size.should eq(6)
+      expected_number = 6
+      FeatureHelper.with_json_support { expected_number = 7 }
+      user_columns.size.should eq(expected_number)
     end
   end
 

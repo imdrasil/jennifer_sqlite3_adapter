@@ -5,6 +5,10 @@ class CreateUser < Jennifer::Migration::Base
       t.integer :age
       t.bool :admin, {:null => false, :default => false}
 
+      FeatureHelper.with_json_support do
+        t.json :interests
+      end
+
       t.index :name, type: :unique, name: "name_index"
       t.timestamps
     end

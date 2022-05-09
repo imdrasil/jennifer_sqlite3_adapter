@@ -1,17 +1,14 @@
-require "jennifer"
-require "./src/jennifer_sqlite3_adapter"
-require "./spec/support/migrations/*"
 require "sam"
+require "jennifer"
 require "jennifer/sam"
 
+require "./src/jennifer_sqlite3_adapter"
+require "./spec/support/feature_helper"
+require "./spec/support/migrations/*"
+
 Jennifer::Config.configure do |conf|
+  conf.read("./spec/support/database.yml", "test")
   conf.logger = Log.for("db", :error)
-  conf.user = "anyuser"
-  conf.password = "anypassword"
-  conf.host = "./"
-  conf.adapter = "sqlite3"
-  conf.db = "test.db"
-  conf.migration_files_path = "./spec/support/migrations"
 end
 
 Sam.help

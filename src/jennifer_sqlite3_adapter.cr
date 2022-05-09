@@ -4,6 +4,7 @@ require "./sqlite3/command_interface"
 require "./sqlite3/sql_generator"
 require "./sqlite3/schema_processor"
 require "./sqlite3/meta/meta_table"
+require "./sqlite3/functions"
 
 module Jennifer
   module SQLite3

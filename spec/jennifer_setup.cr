@@ -12,12 +12,8 @@ end
 
 def setup_jennifer
   Jennifer::Config.configure do |conf|
+    conf.read("./spec/support/database.yml", "test")
     conf.logger = Spec.logger
-    conf.user = "anyuser"
-    conf.password = "anypassword"
-    conf.host = "."
-    conf.adapter = "sqlite3"
-    conf.db = "test.db"
     conf.verbose_migrations = false
   end
 

@@ -17,8 +17,11 @@ describe Jennifer::SQLite3::MetaTable do
   end
 
   describe "#columns" do
+    expected_number = 6
+    FeatureHelper.with_json_support { expected_number = 7 }
+
     it { index.columns.should be_empty }
-    it { table.columns.size.should eq(6) }
+    it { table.columns.size.should eq(expected_number) }
   end
 
   describe "#indexes" do

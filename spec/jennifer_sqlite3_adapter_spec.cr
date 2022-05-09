@@ -4,6 +4,8 @@ require "./spec_helper"
 
 describe Jennifer::SQLite3::Adapter do
   adapter = Spec.adapter
+  user_columns_number = 6
+  FeatureHelper.with_json_support { user_columns_number = 7 }
 
   describe "data types" do
     describe Bool do
@@ -20,6 +22,20 @@ describe Jennifer::SQLite3::Adapter do
         time = Time.local
         user = User.create!({name: "User"})
         user.reload.created_at!.should be_close(time, 0.001.seconds)
+      end
+    end
+
+    FeatureHelper.with_json_support do
+      describe JSON::Any do
+        it do
+          user = User.create!({
+            name:      "User",
+            interests: JSON.parse(%({"likes": ["skating", "reading", "swimming"]})),
+          })
+          user = User.find!(user.id)
+          user.interests.should be_a(JSON::Any)
+          user.interests!["likes"].as_a.should eq(["skating", "reading", "swimming"])
+        end
       end
     end
   end
@@ -102,7 +118,7 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#table_column_count" do
     context "with name of existing table" do
-      it { adapter.table_column_count("users").should eq(6) }
+      it { adapter.table_column_count("users").should eq(user_columns_number) }
     end
 
     context "with name of missing table" do
@@ -112,7 +128,7 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#tables_column_count" do
     it "returns amount of tables fields" do
-      adapter.tables_column_count(["users", "posts"]).to_a.map(&.count).should eq([6, 7])
+      adapter.tables_column_count(["users", "posts"]).to_a.map(&.count).should eq([user_columns_number, 7])
     end
 
     pending "returns amount of views fields" do

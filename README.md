@@ -1,4 +1,4 @@
-# Jennifer SQLite3 adapter [![Build Status](https://travis-ci.org/imdrasil/jennifer_sqlite3_adapter.svg)](https://travis-ci.org/imdrasil/jennifer_sqlite3_adapter) [![Latest Release](https://img.shields.io/github/release/imdrasil/jennifer_sqlite3_adapter.svg)](https://github.com/imdrasil/jennifer_sqlite3_adapter/releases) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://imdrasil.github.io/jennifer_sqlite3_adapter/versions)
+# Jennifer SQLite3 adapter [![Latest Release](https://img.shields.io/github/release/imdrasil/jennifer_sqlite3_adapter.svg)](https://github.com/imdrasil/jennifer_sqlite3_adapter/releases) [![Docs](https://img.shields.io/badge/docs-available-brightgreen.svg)](https://imdrasil.github.io/jennifer_sqlite3_adapter/versions)
 
 SQLite3 adapter for [Jennifer](https://github.com/imdrasil/jennifer.cr).
 
@@ -53,6 +53,25 @@ end
 | `#varchar` | `TEXT` | `String` |
 | `#date_time` | `TEXT` | `Time` |
 | `#timestamp` | `TEXT` | `Time` |
+| `#json` | `JSON` | `JSON::Any` |
+
+### JSON support
+
+SQLite added native support for `JSON` data type starting from `3.38.0` (experimental support was added in `3.37.2`). This means that you need to ensure you use correct version if you need access to this feature.
+
+Here is the list of extra JSON functions provided by the adapter:
+
+- `json_extract`
+
+```crystal
+Jennifer::Query["users"].where { json_extract(_interests, "$.likes[1]") == "reading" }
+```
+
+- `json_array_length`
+
+```crystal
+Jennifer::Query["users"].where { json_array_length(_interests, "$.likes") > 10 }
+```
 
 ### Altering table
 
@@ -81,6 +100,6 @@ but this is possible only outside of a transaction. Therefore in a such kind of 
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-## Contributors
+### Testing
 
-- [Roman Kalnytskyi](https://github.com/imdrasil) - creator and maintainer
+To run common test suite simply run `crystal spec`. To include JSON-related tests - specify a json version that supports JSON - `SQLITE_VERSION=3389999 crystal spec`. Same for migration - `SQLITE_VERSION=3389999 crystal sam.cr db:create @ db:migrate`

@@ -2,7 +2,19 @@ abstract class Model < Jennifer::Model::Base
   with_timestamps
 end
 
+module JSONField
+  include Jennifer::Model::Mapping
+
+  mapping(
+    interests: JSON::Any?
+  )
+end
+
 class User < Model
+  FeatureHelper.with_json_support do
+    include JSONField
+  end
+
   mapping(
     id: Primary32,
     name: String,
