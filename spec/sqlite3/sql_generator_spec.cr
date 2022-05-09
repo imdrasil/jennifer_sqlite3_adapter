@@ -89,41 +89,41 @@ describe Jennifer::SQLite3::SQLGenerator do
   describe ".json_path" do
     criteria = Jennifer::QueryBuilder::Criteria.new("field", "table")
 
-    it do
-      expect_raises(Jennifer::BaseException) do
-        described_class.json_path(criteria.take(1))
+    # it do
+    #   expect_raises(Jennifer::BaseException) do
+    #     described_class.json_path(criteria.take(1))
+    #   end
+    # end
+
+    context "array index" do
+      it "paste number without escaping" do
+        s = criteria.take(0)
+        described_class.json_path(s).should eq(%("table"."field"->>0))
       end
     end
 
-    # context "array index" do
-    #   it "paste number without escaping" do
-    #     s = criteria.take(0)
-    #     described_class.json_path(s).should eq(%("table"."field"->>0))
-    #   end
-    # end
+    context "path" do
+      it "wraps path into quotes" do
+        s = criteria.path("likes")
+        described_class.json_path(s).should eq(%("table"."field"->'likes'))
+      end
 
-    # context "path" do
-    #   it "wraps path into quotes" do
-    #     s = criteria.path("likes")
-    #     described_class.json_path(s).should eq(%("table"."field"->'likes'))
-    #   end
+      it "use arrow operator if need just first level extraction" do
+        s = criteria["a"]
+        described_class.json_path(s).should eq(%("table"."field"->>'a'))
+      end
+    end
 
-    #   it "use arrow operator if need just first level extraction" do
-    #     s = criteria["a"]
-    #     described_class.json_path(s).should eq(%("table"."field"->>'a'))
-    #   end
-    # end
-
-    # FeatureHelper.with_json_support do
-    #   it do
-    #     user = User.create!({
-    #       name:      "User",
-    #       interests: JSON.parse(%({"likes": ["skating", "reading", "swimming"]})),
-    #     })
-    #     User.create!({name: "User2", interests: JSON.parse(%({"likes": ["reading", "skating", "swimming"]}))})
-    #     User.where { _interests.take("$.likes[1]") == "reading" }.first!.id.should eq(user.id)
-    #   end
-    # end
+    FeatureHelper.with_json_support do
+      it do
+        user = User.create!({
+          name:      "User",
+          interests: JSON.parse(%({"likes": ["skating", "reading", "swimming"]})),
+        })
+        User.create!({name: "User2", interests: JSON.parse(%({"likes": ["reading", "skating", "swimming"]}))})
+        User.where { _interests.take("$.likes[1]") == "reading" }.first!.id.should eq(user.id)
+      end
+    end
   end
 
   describe ".quote" do
