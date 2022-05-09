@@ -1,0 +1,7 @@
+test:
+  user: "anyuser"
+  password: "anypassword"
+  host: "./"
+  adapter: "sqlite3"
+  db: "test.db"
+  migration_files_path: "./spec/support/migrations"

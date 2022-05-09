@@ -48,7 +48,7 @@ describe Jennifer::SQLite3::CommandInterface do
         command.executable.should eq("sqlite3")
         command.options.should eq(["./test.db", ".schema"])
         command.in_stream.should be_empty
-        command.out_stream.should eq(" | grep -v sqlite_sequence > ./db/structure.sql")
+        command.out_stream.should eq(" | grep -v sqlite_sequence > ./spec/support/structure.sql")
       end
     end
   end
@@ -61,7 +61,7 @@ describe Jennifer::SQLite3::CommandInterface do
       interface.last_command.not_nil!.tap do |command|
         command.executable.should eq("sqlite3")
         command.options.should eq(["./test.db"])
-        command.in_stream.should eq("cat ./db/structure.sql |")
+        command.in_stream.should eq("cat ./spec/support/structure.sql |")
         command.out_stream.should be_empty
       end
     end

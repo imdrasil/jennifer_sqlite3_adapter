@@ -1,5 +1,6 @@
 require "spec"
 require "./jennifer_setup"
+require "./support/feature_helper"
 require "./models"
 # require "factory"
 require "./support/migrations/*"

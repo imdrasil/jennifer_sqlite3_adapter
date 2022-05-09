@@ -18,4 +18,13 @@ class SQLite3::ResultSet
       Column.new(LibSQLite3.column_type(self, index), column_name(index))
     end.to_a
   end
+
+  def read(t : JSON::Any.class) : JSON::Any
+    JSON.parse(read(String))
+  end
+
+  def read(type : JSON::Any?.class) : JSON::Any?
+    value = read(String?)
+    value && JSON.parse(value)
+  end
 end
