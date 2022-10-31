@@ -5,16 +5,31 @@ require "./models"
 # require "factory"
 require "./support/migrations/*"
 
+class Jennifer::Adapter::Base
+  def clear_connection
+    db.close
+    @db = nil
+  end
+end
+
+class Jennifer::SQLite3::CommandInterface
+  getter last_command : Command?
+
+  def execute(command)
+    @last_command = command
+    super
+  end
+end
+
 def schema_rollback
-  Jennifer::Adapter.default_adapter.rollback_transaction
+  Spec.adapter.rollback_transaction
   yield
 ensure
-  [Post, User].each do |model_class|
-    Jennifer::Adapter.default_adapter.exec("DROP TABLE IF EXISTS #{model_class.table_name}")
-  end
-  Jennifer::Migration::Version.all.delete
+  Spec.adapter.clear_connection
+  Jennifer::Migration::Runner.drop if Spec.adapter.database_exists?
+  Jennifer::Migration::Runner.create
   Jennifer::Migration::Runner.migrate
-  Jennifer::Adapter.default_adapter.begin_transaction
+  Spec.adapter.begin_transaction
 end
 
 def read_to_end(rs)

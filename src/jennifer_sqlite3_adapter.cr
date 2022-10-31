@@ -82,7 +82,6 @@ module Jennifer
 
       def tables_column_count(tables)
         MetaTable
-          .all
           .tables
           .where { _tbl_name.in(tables) }
           .to_a
@@ -95,8 +94,8 @@ module Jennifer
         MetaTable.table(table).exists?
       end
 
-      def view_exists?(table) : Bool
-        MetaTable.view(table).exists?
+      def view_exists?(name) : Bool
+        MetaTable.view(name).exists?
       end
 
       def index_exists?(table, name : String) : Bool
@@ -153,6 +152,50 @@ module Jennifer
 
       def command_interface
         @command_interface ||= CommandInterface.new(config)
+      end
+
+      def coerce_database_value(value : Int, target_class : Int32.class)
+        value.to_i
+      end
+
+      def coerce_database_value(value : Int?, target_class : (Int32?).class)
+        return if value.nil?
+
+        value.to_i
+      end
+
+      def coerce_database_value(value : Int, target_class : Int16.class)
+        value.to_i
+      end
+
+      def coerce_database_value(value : Int?, target_class : (Int16?).class)
+        return if value.nil?
+
+        value.to_i16
+      end
+
+      def coerce_database_value(value : Int, target_class : Int8.class)
+        value.to_i8
+      end
+
+      def coerce_database_value(value : Int?, target_class : (Int8?).class)
+        return if value.nil?
+
+        value.to_i8
+      end
+
+      def coerce_database_value(value : Int, target_class : Bool.class)
+        value == 1
+      end
+
+      def coerce_database_value(value : Int?, target_class : (Bool?).class)
+        return if value.nil?
+
+        value == 1
+      end
+
+      def coerce_database_value(value, target_class)
+        value
       end
     end
   end
