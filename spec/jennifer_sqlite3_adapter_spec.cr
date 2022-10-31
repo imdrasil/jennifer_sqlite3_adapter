@@ -128,7 +128,8 @@ describe Jennifer::SQLite3::Adapter do
 
   describe "#tables_column_count" do
     it "returns amount of tables fields" do
-      adapter.tables_column_count(["users", "posts"]).to_a.map(&.count).should eq([user_columns_number, 7])
+      adapter.tables_column_count(["users", "posts"]).sort_by(&.table_name.as(String)).map(&.count)
+        .should eq([7, user_columns_number])
     end
 
     pending "returns amount of views fields" do

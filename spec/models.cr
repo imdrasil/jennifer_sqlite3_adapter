@@ -43,6 +43,25 @@ class Post < Model
   )
 
   belongs_to :user, User
+  has_many :comments, Comment
+
+  def self.generate_list(count)
+    count.times.map { |i| create!({title: "Post #{i}", text: "Text #{i}"}) }.to_a
+  end
+end
+
+class Comment < Model
+  mapping(
+    id: Primary32,
+    text: String,
+    user_id: Int32?,
+    post_id: Int32?,
+    created_at: Time?,
+    updated_at: Time?
+  )
+
+  belongs_to :user, User
+  belongs_to :post, Post
 
   def self.generate_list(count)
     count.times.map { |i| create!({title: "Post #{i}", text: "Text #{i}"}) }.to_a
