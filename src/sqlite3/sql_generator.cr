@@ -79,18 +79,18 @@ module Jennifer
 
       # SQLite doesn't support JSON at all.
       def self.json_path(path : QueryBuilder::JSONSelector)
-        raise BaseException.new("JSON selector isn't supported")
+        # raise BaseException.new("JSON selector isn't supported")
 
-        # operator =
-        #   case path.type
-        #   when :path
-        #     "->"
-        #   when :take
-        #     "->>"
-        #   else
-        #     raise "Wrong json path type"
-        #   end
-        # "#{path.identifier(self)}#{operator}#{quote(path.path)}"
+        operator =
+          case path.type
+          when :path
+            "->"
+          when :take
+            "->>"
+          else
+            raise "Wrong json path type"
+          end
+        "#{path.identifier(self)}#{operator}#{quote(path.path)}"
       end
 
       def self.values_expression(field : Symbol)
